@@ -28,9 +28,9 @@ public class ArticleSOAP {
 		Article article = articleDTO.asArticle();
 		
 		try {
-			String resultString = articleService.addArticle(article);
+			articleService.addArticle(article);
 			
-			return new Result(resultString, articleDTO);
+			return new Result(CustomException.OK);
 			
 		} catch (ArticleException e) {
 			throw new ArticleException(CustomException.ERROR_CREATING_ARTICLE_IN_WEB_SERVICE);
@@ -82,8 +82,8 @@ public class ArticleSOAP {
 	public Result deleteArticle(int id) {
 		
 		try {
-			String resultMessage = articleService.deleteArticle(id);
-			return new Result(resultMessage);
+			articleService.deleteArticle(id);
+			return new Result(CustomException.OK);
 			
 		} catch (ArticleException e) {
 			throw new ArticleException(CustomException.ERROR_DELETING_ADRTICLE_IN_WEB_SERVICE);

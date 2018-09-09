@@ -2,14 +2,17 @@ package org.igorgvozdic.newsarticle.result;
 
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
 import org.igorgvozdic.newsarticle.dto.ArticleDTO;
 import org.igorgvozdic.newsarticle.errorhandeling.CustomException;
 
+@XmlRootElement
 public class Result {
 
 	private int resultCode;
 	
-	private String resiltMessage;
+	private String resultMessage;
 	
 	private ArticleDTO articleDTO;
 	
@@ -22,31 +25,28 @@ public class Result {
 	}
 	
 	public Result(String resultMessage, ArticleDTO articleDTO) {
-		this.resiltMessage = resultMessage;
+		this.resultMessage = resultMessage;
 		this.articleDTO = articleDTO;
-	}
-	
-	public Result(int resultCode, String resultMessage) {
-		this.resultCode = resultCode;
-		this.resiltMessage = resultMessage;
 	}
 	
 	public Result(String resultMessage) {
 		this.resultCode = resultCode;
 	}
 	
-	public Result(int resultCode, String resultMessage, ArticleDTO articleDTO) {
-		this(resultCode, resultMessage);
-		this.articleDTO = articleDTO;
+	public Result(CustomException customException) {
+		this.resultCode = customException.getStatusCode();
+		this.resultMessage = customException.getStatusMessage();
 	}
 	
 	public Result (CustomException customException, ArticleDTO articleDTO) {
-		this.customException = customException;
+		this.resultCode = customException.getStatusCode();
+		this.resultMessage = customException.getStatusMessage();
 		this.articleDTO = articleDTO;
 	}
 	
 	public Result (CustomException customException, List<ArticleDTO> articleDTOs) {
-		this.customException = customException;
+		this.resultCode = customException.getStatusCode();
+		this.resultMessage = customException.getStatusMessage();
 		this.articleDTOs = articleDTOs;
 	
 	}
@@ -59,12 +59,12 @@ public class Result {
 		this.resultCode = resultCode;
 	}
 
-	public String getResiltMessage() {
-		return resiltMessage;
+	public String getResultMessage() {
+		return resultMessage;
 	}
 
-	public void setResiltMessage(String resiltMessage) {
-		this.resiltMessage = resiltMessage;
+	public void setResultMessage(String resiltMessage) {
+		this.resultMessage = resiltMessage;
 	}
 
 	public ArticleDTO getArticleDTO() {
@@ -82,7 +82,5 @@ public class Result {
 	public void setArticleDTOs(List<ArticleDTO> articleDTOs) {
 		this.articleDTOs = articleDTOs;
 	}
-	
-	
 	
 }
