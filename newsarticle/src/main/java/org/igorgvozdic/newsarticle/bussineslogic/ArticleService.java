@@ -11,12 +11,16 @@ import org.igorgvozdic.newsarticle.dto.ArticleDTO;
 import org.igorgvozdic.newsarticle.errorhandeling.ArticleException;
 import org.igorgvozdic.newsarticle.errorhandeling.CustomException;
 import org.igorgvozdic.newsarticle.model.Article;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Stateless
 public class ArticleService {
 
 	@EJB
 	private ArticleDAO articleDAO;
+	
+	private final Logger logger = LoggerFactory.getLogger(ArticleService.class);
 	
 	public String addArticle(Article article) {
 		
@@ -124,7 +128,7 @@ public class ArticleService {
 		if (articleDTOs != null) {
 			return articleDTOs;
 		}
-		
+		logger.info("No articles found with this short description");
 		return null;
 	}
 	
@@ -147,7 +151,7 @@ public class ArticleService {
 		
 		public List<ArticleDTO> searchByShortDescription(String shortDescription) {
 			
-			List<Article> articles = articleDAO.searchByTitle(shortDescription);
+			List<Article> articles = articleDAO.searchByShortDescription(shortDescription);
 			
 			List<ArticleDTO> articleDTOs = new ArrayList<>();
 			
