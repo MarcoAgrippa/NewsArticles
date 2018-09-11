@@ -5,7 +5,7 @@ Servisni sloj je razvijen u vidu REST i SOAP API-a.
 Za testiranje i povezivanje sa bazom podataka koristio sam MySQL i WildFly kao aplikativni server.
 
 Da biste testirali API potrebno je da u persistence.xml (koji se nalazi u /newsarticle/src/main/resources/META-INF/)
-navedete naziv Vašeg datasorsa koji je povezan sa Vašom bazom i to tako što ćete u <jta-data-source></jta-data-source> staviti naziv Vašeg datasorsa.
+navedete naziv Vašeg datasorsa koji je povezan sa Vašom bazom i to tako što ćete u "<jta-data-source></jta-data-source>" staviti naziv Vašeg datasorsa.
 Nakon toga potrebno je postaviti(deploy) projekat na aplikativni server.
 
     
@@ -50,9 +50,9 @@ Kao i kod POST i PUT metode potrebno je razviti klijentsku aplikaciju ili korist
 
 
 UPOZORENJE/WARNING  U slucaju da ne vidite JSON output koji proizvodi REST potrebno je da u Vašem standalone.xml fajlu podesite da aplikativni server "sluša" sve portove i to tako što ćete uneti: 
-          <interface name="any">  
+          "<interface name="any">  
                <any-address/>  
-          </interface>  
+          </interface>"  
           
           
 U narednom periodu aplikacija će biti dopunjena frontendom kroz JSF, kako bi se olaksala interakcija sa korisnikom.
