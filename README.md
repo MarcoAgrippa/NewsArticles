@@ -1,4 +1,4 @@
-# NewsArticles(WORK IN PROGRESS)
+# NewsArticles REST/SOAP
 Ovo je jednostavan projekat baziran na troslojnoj arhitekturi u kojem su implementirani sloj perzistencije,biznis logika i servisni sloj.
 Sloj perzistencije je implementiran korišcenjem JPA odnosno Hibernate frejmvorka.
 Servisni sloj je razvijen u vidu REST i SOAP API-a. 
