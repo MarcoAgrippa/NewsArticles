@@ -1,5 +1,6 @@
 package org.igorgvozdic.newsarticle.bussineslogic;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,7 +23,7 @@ public class ArticleService {
 	
 	private final Logger logger = LoggerFactory.getLogger(ArticleService.class);
 	
-	public String addArticle(Article article) {
+	public void addArticle(Article article) {
 		
 		try {
 			validateArticle(article);
@@ -32,13 +33,8 @@ public class ArticleService {
 			e.getStatusMessage();
 		}
 		
-		boolean message = articleDAO.saveArticle(article);
+		articleDAO.saveArticle(article);
 		
-		if (message) {
-			return "Ok";
-		}else {
-			return "Error";
-		}
 	}
 	
 	public List<ArticleDTO> getAllArticles() {
@@ -77,18 +73,13 @@ public class ArticleService {
 		
 	}
 	
-	public String deleteArticle(int id) {
+	public void deleteArticle(int id) {
 		
 		Article article = articleDAO.getArticle(id);
 		
 		if (article != null) {
 			articleDAO.deleteArticle(id);
-			
-			return "Deletion sucessful";
 		}
-		
-		return "Error deleting article with " + id;
-		
 	}
 	
 	
@@ -166,11 +157,27 @@ public class ArticleService {
 			return null;
 		}
 		
+		public List<ArticleDTO> searchArticleByDate(String localDate) {
+			
+			LocalDate localDate2 = Article.convertStringToLocalDate(localDate);
+			
+			List<ArticleDTO> articlesDTOs = new ArrayList<>();
+			
+			List<Article> articles = articleDAO.getArticleByDate(localDate2);
+			
+			for(Article a : articles) {
+				articlesDTOs.add(a.asFullArticleDTO());	
+			}
+			
+			return articlesDTOs;
+		}
+		
 		public List<ArticleDTO> searchAll(String query){
 			
 			List<Article> articlesFoundByTitle = articleDAO.searchByTitle(query);
 			List<Article> articlesFoundByAuthor = articleDAO.searchByAuthor(query);
 			List<Article> articlesFoundByShortDescription = articleDAO.searchByShortDescription(query);
+			List<Article> articlesFoundByDate = articleDAO.searchByDate(query);
 			
 			List<ArticleDTO> articleDTOs = new ArrayList<>();
 			
@@ -181,6 +188,10 @@ public class ArticleService {
 				articleDTOs.add(a.asFullArticleDTO());
 			}	
 			for(Article a : articlesFoundByShortDescription) {
+				articleDTOs.add(a.asFullArticleDTO());
+			}
+			
+			for(Article a :articlesFoundByDate) {
 				articleDTOs.add(a.asFullArticleDTO());
 			}
 			

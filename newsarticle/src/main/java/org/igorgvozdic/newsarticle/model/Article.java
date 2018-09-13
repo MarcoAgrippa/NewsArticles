@@ -1,10 +1,17 @@
 package org.igorgvozdic.newsarticle.model;
 
+import java.sql.Date;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.validation.ConstraintValidatorContext.ConstraintViolationBuilder.LeafNodeBuilderCustomizableContext;
 
 import org.igorgvozdic.newsarticle.dto.ArticleDTO;
 
@@ -24,6 +31,8 @@ public class Article {
 	@Enumerated(EnumType.STRING)
 	private Category category;
 	
+	private LocalDate localDate = LocalDate.now();
+	
 	public Article() {
 		
 	}
@@ -34,6 +43,7 @@ public class Article {
 		this.author = author;
 		this.shortDescription = shortDescription;
 		this.category = category;
+		this.localDate = LocalDate.now();
 	}
 	
 	public Article(ArticleDTO articleDTO) {
@@ -41,6 +51,7 @@ public class Article {
 		this.title = articleDTO.getTitle();
 		this.shortDescription = articleDTO.getShortDescription();
 		this.category = articleDTO.getCategory();
+		this.localDate = localDate.now();
 	}
 
 	public int getId() {
@@ -79,6 +90,14 @@ public class Article {
 		this.category = category;
 	}
 	
+	public LocalDate getLocalDate() {
+		return localDate;
+	}
+
+	public void setLocalDate(LocalDate localDate) {
+		this.localDate = localDate;
+	}
+
 	public ArticleDTO asFullArticleDTO(ArticleDTO articleDTO) {
 		return new ArticleDTO(this);
 	}
@@ -92,21 +111,33 @@ public class Article {
 		articleDTO.setTitle(this.title);
 		articleDTO.setShortDescription(this.shortDescription);
 		articleDTO.setCategory(this.category);
+		articleDTO.setLocalDate(this.localDate);
 		
 		return articleDTO;
 	}
 	
-	public void update(ArticleDTO articleDTO) {
-		this.title = articleDTO.getTitle();
-		this.author = articleDTO.getAuthor();
-		this.shortDescription = articleDTO.getShortDescription();
-		this.category = articleDTO.getCategory();
+	
+	public static LocalDate convertStringToLocalDate (String stringLocalDate) {
+		
+		if(stringLocalDate != null) {
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy.");
+			LocalDate parseDate = LocalDate.parse(stringLocalDate, formatter);
+			return parseDate;
+		}		
+		return null;
 	}
-
+	
+	public String convertLocalDateToString (LocalDate localDate) {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy.");
+		String stringDate = localDate.format(formatter);
+		return stringDate;
+	}
+	
+	
 	@Override
 	public String toString() {
 		return "Article [id=" + id + ", title=" + title + ", author=" + author + ", shortDescription="
-				+ shortDescription + ", category=" + category + "]";
+				+ shortDescription + ", category=" + category + " localDate =" + localDate + "]";
 	}
 	
 }

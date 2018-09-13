@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import javax.ejb.EJB;
+import javax.jws.WebParam;
 import javax.jws.WebService;
 
 import org.igorgvozdic.newsarticle.bussineslogic.ArticleService;
@@ -11,6 +12,7 @@ import org.igorgvozdic.newsarticle.dto.ArticleDTO;
 import org.igorgvozdic.newsarticle.errorhandeling.ArticleException;
 import org.igorgvozdic.newsarticle.errorhandeling.CustomException;
 import org.igorgvozdic.newsarticle.model.Article;
+import org.igorgvozdic.newsarticle.model.Category;
 import org.igorgvozdic.newsarticle.result.Result;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,8 +25,14 @@ public class ArticleSOAP {
 	
 	private Logger logger = LoggerFactory.getLogger(ArticleSOAP.class);
 	
-	public Result addArticle(ArticleDTO articleDTO) {
+	
+	
+	public Result addArticle(@WebParam(name="title")String title,
+							 @WebParam(name="author") String author,
+							 @WebParam(name="shortDescription")String shortDescription,
+							 @WebParam(name="category")Category category) {
 		
+		ArticleDTO articleDTO = new ArticleDTO(title, author, shortDescription, category);
 		Article article = articleDTO.asArticle();
 		
 		try {
@@ -50,6 +58,16 @@ public class ArticleSOAP {
 		}
 	}
 	
+	public Result getArticlesByDate(String date) {
+		try {
+			List<ArticleDTO> articleDTOs = articleService.searchArticleByDate(date);
+			
+			return new Result(CustomException.OK, articleDTOs);
+		} catch (ArticleException e) {
+			throw new ArticleException(CustomException.NO_ARTICLE_FOUND);
+		}
+	}
+	
 	public Result getAllArticles() {
 		try {
 			List<ArticleDTO> articles = articleService.getAllArticles();
@@ -61,11 +79,15 @@ public class ArticleSOAP {
 		
 	}
 	
-	public Result editArticle(int id, ArticleDTO articleDTO) {
+	public Result editArticle(@WebParam(name="article_id") int id, 
+							  @WebParam(name="title")String title,
+			 				  @WebParam(name="author") String author,
+			 				  @WebParam(name="shortDescription")String shortDescription,
+			 				  @WebParam(name="category")Category category ) {
 		
 		try {
+			ArticleDTO articleDTO = new ArticleDTO(title, author, shortDescription, category);
 			Article article = articleDTO.asArticle();
-			logger.info(article.toString());
 			
 			Article article2 = articleService.editArticle(id, article);
 			

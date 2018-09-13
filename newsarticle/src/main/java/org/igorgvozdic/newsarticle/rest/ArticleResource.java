@@ -62,6 +62,7 @@ public class ArticleResource {
 	public Result queryArticles(@QueryParam("title") String title,
 								@QueryParam("author") String author,
 								@QueryParam("shortdescription") String shortDescription,
+								@QueryParam("date") String date,
 								@QueryParam("all") String queryAll) {
 		if (title != null && title.length() > 0) {
 			return getArticlesByTitle(title);
@@ -73,6 +74,10 @@ public class ArticleResource {
 		
 		if (shortDescription !=null && shortDescription.length() > 0 ) {
 			return getArticlesByShortDescription(shortDescription);
+		}
+		
+		if (date != null && date.length() > 0) {
+			return getArticleByDate(date);
 		}
 		
 		if (queryAll != null && queryAll.length() > 0) {
@@ -159,12 +164,22 @@ public class ArticleResource {
 	
 			try {
 				List<ArticleDTO> articleDTOs = articleService.searchByShortDescription(shortDescription);
-				
 				return new Result(CustomException.OK, articleDTOs);
+				
 			} catch (ArticleException e) {
 				throw new ArticleException(CustomException.NO_ARTICLE_FOUND);
 			}
 		
+	}
+	
+	public Result getArticleByDate(String date) {
+		try {
+			List<ArticleDTO> articleDTOs = articleService.searchArticleByDate(date);
+			return new Result(CustomException.OK, articleDTOs);
+			
+		}catch (ArticleException e) {
+			throw new ArticleException(CustomException.NO_ARTICLE_FOUND);
+		}
 	}
 	
 	public Result searchAll(String queryString) {

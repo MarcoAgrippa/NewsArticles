@@ -1,6 +1,9 @@
 package org.igorgvozdic.newsarticle.dto;
 
+import java.time.LocalDate;
+
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 import org.igorgvozdic.newsarticle.model.Article;
 import org.igorgvozdic.newsarticle.model.Category;
@@ -18,6 +21,8 @@ public class ArticleDTO {
 	
 	private Category category;
 	
+	private LocalDate localDate;
+	
 	public ArticleDTO() {
 		
 	}
@@ -34,6 +39,7 @@ public class ArticleDTO {
 		this.author = article.getAuthor();
 		this.shortDescription = article.getShortDescription();
 		this.category = article.getCategory();
+		this.localDate = article.getLocalDate();
 	}
 
 	public int getId() {
@@ -75,7 +81,15 @@ public class ArticleDTO {
 	public void setCategory(Category category) {
 		this.category = category;
 	}
-	
+
+	public LocalDate getLocalDate() {
+		return localDate;
+	}
+
+	public void setLocalDate(LocalDate localDate) {
+		this.localDate = localDate;
+	}
+
 	public ArticleDTO asArticleDTO(Article article) {
 		
 		ArticleDTO articleDTO = new ArticleDTO();
@@ -84,6 +98,7 @@ public class ArticleDTO {
 		articleDTO.setTitle(article.getTitle());
 		articleDTO.setShortDescription(article.getShortDescription());
 		articleDTO.setCategory(article.getCategory());
+		articleDTO.setLocalDate(article.getLocalDate());
 		
 		return articleDTO;
 	}

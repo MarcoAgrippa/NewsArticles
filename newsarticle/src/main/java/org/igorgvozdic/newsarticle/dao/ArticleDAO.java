@@ -1,5 +1,6 @@
 package org.igorgvozdic.newsarticle.dao;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,7 +55,24 @@ public class ArticleDAO {
 			logger.info("Error retriving article from base", article);
 			return null;
 		}
+	}
+	
+	public List<Article> getArticleByDate(LocalDate localDate) {
+		String q = "SELECT a FROM Article a WHERE a.localDate LIKE :localDate";
 		
+		TypedQuery<Article> query = eManager.createQuery(q, Article.class);
+		
+		query.setParameter("localDate", localDate);
+		
+		List<Article>  articles = query.getResultList();
+		
+		if (articles != null) {
+			return articles;
+			
+		}else {
+			logger.info("Error retriving article from base", articles);
+			return null;
+		}
 	}
 	
 	public List<Article> getAllArticles(){
@@ -77,6 +95,7 @@ public class ArticleDAO {
 			article1.setTitle(article.getTitle());
 			article1.setShortDescription(article.getShortDescription());
 			article1.setCategory(article.getCategory());
+			article1.setLocalDate(article.getLocalDate());
 			
 			return eManager.merge(article1);
 		}
@@ -132,6 +151,19 @@ public class ArticleDAO {
 		TypedQuery<Article> query = eManager.createQuery(qString, Article.class);
 		
 		query.setParameter("shortDescription", shortDescription);
+			
+		List<Article> articles = query.getResultList();
+		
+		return articles;
+	}
+	
+		public List<Article> searchByDate(String localDate) {
+		
+		String qString = "SELECT a FROM Article a WHERE a.localDate LIKE CONCAT('%',:localDate,'%')";
+		
+		TypedQuery<Article> query = eManager.createQuery(qString, Article.class);
+		
+		query.setParameter("localDate", localDate);
 			
 		List<Article> articles = query.getResultList();
 		
