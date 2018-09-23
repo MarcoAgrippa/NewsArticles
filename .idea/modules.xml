@@ -2,7 +2,11 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+<<<<<<< HEAD
       <module fileurl="file://$PROJECT_DIR$/.idea/NewsArticles.iml" filepath="$PROJECT_DIR$/.idea/NewsArticles.iml" />
+=======
+      <module fileurl="file://$PROJECT_DIR$/NewsArticles-master/newsarticle/src/main/main.iml" filepath="$PROJECT_DIR$/NewsArticles-master/newsarticle/src/main/main.iml" />
+>>>>>>> Commit sa rudimentarnim JSf-om za dodavanje, editovanje, brisanje i pretragu clanaka.
     </modules>
   </component>
 </project>

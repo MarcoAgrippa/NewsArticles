@@ -1,0 +1,69 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"      
+      xmlns:h="http://java.sun.com/jsf/html">
+      
+<h:head>
+	<h:outputStylesheet library="css" name="newfile.css"/>
+	<title>Articles</title>
+</h:head>
+<h:body>
+<div class="left"></div>
+<div class="center">
+	<h:dataTable value="#{articleListBean.articles}" var="article" class="paleBlueRows">
+		<h:column>
+			<f:facet name="header">ID</f:facet>
+			<h:outputLabel value="#{article.id}" />
+		</h:column>	
+		<h:column>
+			<f:facet name="header">Author</f:facet>
+			<h:outputLabel value="#{article.author}" />
+		</h:column>
+		<h:column>
+			<f:facet name="header">Title</f:facet>
+			<h:outputLabel value="#{article.title}" />
+		</h:column>
+		<h:column>
+			<f:facet name="header">Category</f:facet>
+			<h:outputLabel value="#{article.category}" />
+		</h:column>
+		<h:column>
+			<f:facet name="header">Description</f:facet>
+			<h:outputLabel value="#{article.shortDescription}" />
+		</h:column>
+	</h:dataTable>
+	
+	<h:form id="delete-and-searh">
+		<h:outputLabel value="Enter ID" />
+		<h:inputText value="#{articleListBean.id}" />
+		<h:commandButton action="#{articleListBean.deleteArticle()}" value="Delete..." />
+		<h:outputLabel value="What are you searching for?" />
+		<h:inputText value="#{articleListBean.query}" />
+		<h:commandButton  action="#{articleListBean.searchArticle()}" value="Search..."  />
+	</h:form>
+	<h:link id="add-article-link" outcome="addarticle" value="I want to add new article..." />
+	
+	<h:form id="edit-article">
+		<h:panelGrid columns="2">
+			<h:outputLabel value="ID" />
+			<h:inputText value="#{articleListBean.id}" />
+			<h:outputLabel value="Author" />
+			<h:inputText value="#{articleListBean.articleDTO.author}" />
+			<h:outputLabel value="Title" />
+			<h:inputText value="#{articleListBean.articleDTO.title}" />
+			<h:outputLabel value="Category" />
+			<h:selectOneMenu value="#{articleListBean.articleDTO.category}">
+				<f:selectItems value="#{articleListBean.articleDTO.categories}" var="c">
+					<f:selectItem value="#{c.name()}"/>
+				</f:selectItems>
+			</h:selectOneMenu>
+			<h:outputLabel value="Short Description" />
+			<h:inputTextarea value="#{articleListBean.articleDTO.shortDescription}" />
+		</h:panelGrid>
+		<h:commandButton action="#{articleListBean.editArticle()}" value="Edit..." />
+	</h:form>
+</div>
+<div class="right"></div>
+
+</h:body>
+
+</html>
